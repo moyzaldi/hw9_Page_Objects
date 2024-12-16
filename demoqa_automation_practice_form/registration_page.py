@@ -2,6 +2,8 @@ import os
 
 from selene import browser, by, have
 
+from resources.users import User
+
 
 class RegistrationPage:
 
@@ -54,6 +56,21 @@ class RegistrationPage:
     def submit(self):
         browser.element('#submit').click()
 
+    def register(self, new_user: User):
+        self.fill_first_name(new_user.first_name)
+        self.fill_last_name(new_user.last_name)
+        self.fill_email(new_user.user_email)
+        self.fill_gender(new_user.gender)
+        self.fill_mobile(new_user.user_number)
+        self.fill_date_of_birth(new_user.month, new_user.year, new_user.day)
+        self.fill_subject(new_user.subjects)
+        self.fill_hobby(new_user.hobbies)
+        self.up_load_picture(new_user.images)
+        self.fill_current_address(new_user.current_address)
+        self.fill_state(new_user.state)
+        self.fill_city(new_user.city)
+        self.submit()
+
 
 class TableResponsive:
 
@@ -86,3 +103,15 @@ class TableResponsive:
 
     def assert_state_and_city(self, state, city):
         browser.element('.table-responsive').should(have.text(f'{state} {city}'))
+
+    def assert_data(self, new_user: User):
+        self.assert_full_name(new_user.first_name, new_user.last_name)
+        self.assert_userEmail(new_user.user_email)
+        self.assert_gender(new_user.gender)
+        self.assert_userNumber(new_user.user_number)
+        self.assert_date_of_birth(new_user.day, new_user.month, new_user.year)
+        self.assert_subjects(new_user.subjects)
+        self.assert_hobbies(new_user.hobbies)
+        self.assert_images(new_user.images)
+        self.assert_currentAddress(new_user.current_address)
+        self.assert_state_and_city(new_user.state, new_user.city)
