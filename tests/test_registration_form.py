@@ -3,9 +3,11 @@ from demoqa_automation_practice_form.registration_page import RegistrationPage, 
 
 
 def test_registration_user(browser_settings):
+
     registration_page = RegistrationPage()
 
     registration_page.open()
+    registration_page.remove_banner()
     registration_page.fill_first_name(new_user.first_name)
     registration_page.fill_last_name(new_user.last_name)
     registration_page.fill_email(new_user.user_email)
