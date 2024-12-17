@@ -9,6 +9,8 @@ class RegistrationPage:
 
     def open(self):
         browser.open('/automation-practice-form')
+
+    def remove_banner(self):
         browser.driver.execute_script("$('#fixedban').remove()")
         browser.driver.execute_script("$('footer').remove()")
 
@@ -70,6 +72,7 @@ class RegistrationPage:
         self.fill_state(new_user.state)
         self.fill_city(new_user.city)
         self.submit()
+
 
 
 class TableResponsive:
