@@ -1,6 +1,6 @@
 import os
 
-from selene import browser, by, have
+from selene import browser, by, have, command
 
 from resources.users import User
 
@@ -32,6 +32,7 @@ class RegistrationPage:
     def fill_date_of_birth(self, mm, yyyy, dd):
         browser.element('#dateOfBirthInput').click()
         browser.element('.react-datepicker__month-select').click().element(by.text(mm)).click()
+        # browser.element('.react-datepicker__month-select').send_keys('4')
         browser.element('.react-datepicker__year-select').click().element(by.text(yyyy)).click()
         if len(dd) == 1:
             dd = '0' + dd
@@ -45,9 +46,16 @@ class RegistrationPage:
 
     def up_load_picture(self, path):
         browser.element("#uploadPicture").send_keys(os.path.abspath(f"../resources/images/{path}"))
+        # browser.element("#uploadPicture").set_value(
+        #     os.path.abspath(
+        #         os.path.join(os.path.dirname(resources._file_),f"images/{path}")
+        #     )
+        # )
 
     def fill_current_address(self, value):
-        browser.element('#currentAddress').type(value)
+        # browser.element('#currentAddress').type(value)
+        # browser.element('#currentAddress').with_(set_value_by_js=True).set_value(value)  для переменной и  использовать  несколько раз
+        browser.element('#currentAddress').perform(command.js.set_value(value))  # если один раз
 
     def fill_state(self, value):
         browser.element('#state').click().element(by.text(value)).click()
@@ -57,6 +65,8 @@ class RegistrationPage:
 
     def submit(self):
         browser.element('#submit').click()
+        # browser.element('#submit').press_enter()
+        # browser.element('#submit').perform(command.js.click)
 
     def register(self, new_user: User):
         self.fill_first_name(new_user.first_name)
@@ -77,34 +87,34 @@ class RegistrationPage:
 class TableResponsive:
 
     def assert_full_name(self, firstName,lastName):
-        browser.element('.table-responsive').should(have.text(f'{firstName} {lastName}'))
+        browser.element('.table').should(have.text(f'{firstName} {lastName}'))
 
     def assert_userEmail(self, userEmail):
-        browser.element('.table-responsive').should(have.text(userEmail))
+        browser.element('.table').should(have.text(userEmail))
 
     def assert_gender(self, gender):
-        browser.element('.table-responsive').should(have.text(gender))
+        browser.element('.table').should(have.text(gender))
 
     def assert_userNumber(self, userNumber):
-        browser.element('.table-responsive').should(have.text(userNumber))
+        browser.element('.table').should(have.text(userNumber))
 
     def assert_date_of_birth(self, day, month,year):
-        browser.element('.table-responsive').should(have.text(f'{day} {month},{year}'))
+        browser.element('.table').should(have.text(f'{day} {month},{year}'))
 
     def assert_subjects(self, subjects):
-        browser.element('.table-responsive').should(have.text(subjects))
+        browser.element('.table').should(have.text(subjects))
 
     def assert_hobbies(self, hobbies):
-        browser.element('.table-responsive').should(have.text(hobbies))
+        browser.element('.table').should(have.text(hobbies))
 
     def assert_images(self, images):
-        browser.element('.table-responsive').should(have.text(images))
+        browser.element('.table').should(have.text(images))
 
     def assert_currentAddress(self, currentAddress):
-        browser.element('.table-responsive').should(have.text(currentAddress))
+        browser.element('.table').should(have.text(currentAddress))
 
     def assert_state_and_city(self, state, city):
-        browser.element('.table-responsive').should(have.text(f'{state} {city}'))
+        browser.element('.table').should(have.text(f'{state} {city}'))
 
     def assert_data(self, new_user: User):
         self.assert_full_name(new_user.first_name, new_user.last_name)
